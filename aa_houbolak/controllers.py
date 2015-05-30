@@ -20,27 +20,27 @@ class website_yenth(website_sale):
         order = request.website.sale_get_order()
 
         if post:
-	    if post.get('color'):
-	    	order.write({'color': int(post.get('color'))})
-            for line in order.order_line:
-		hoogteWebshop = int(post.get('%s-%s' % (line.id, 'hoogteWebshop')))
-		breedteWebshop = int(post.get('%s-%s' % (line.id, 'breedteWebshop')))
-		resultaatBerekening = hoogteWebshop * breedteWebshop / 1000000 * 1
-		print("Result: " + str(resultaatBerekening))
-                line.write({
-                    'hoogte': int(post.get('%s-%s' % (line.id, 'hoogteWebshop'))),
-                    'breedte': int(post.get('%s-%s' % (line.id, 'breedteWebshop'))),
-                    'aantal': 1,
-		    'product_uom_qty': resultaatBerekening,
-		    'links': bool(post.get('%s-%s' % (line.id, 'linksWebshop'))),
-		    'rechts': bool(post.get('%s-%s' % (line.id, 'rechtsWebshop'))),
-		    'boven': bool(post.get('%s-%s' % (line.id, 'bovenWebshop'))),
-		    'onder': bool(post.get('%s-%s' % (line.id, 'onderWebshop'))),
-		    'boringen': post.get('%s-%s' % (line.id, 'boringenWebshop')),
-		    'opmerkingen': post.get('%s-%s' % (line.id, 'opmerkingenWebshop')),
+            if post.get('color'):
+                order.write({'color': int(post.get('color'))})
+                for line in order.order_line:
+                    hoogteWebshop = int(post.get('%s-%s' % (line.id, 'hoogteWebshop')))
+                    breedteWebshop = int(post.get('%s-%s' % (line.id, 'breedteWebshop')))
+                    resultaatBerekening = hoogteWebshop * breedteWebshop / 1000000 * 1
+                    print("Result: " + str(resultaatBerekening))
+                    line.write({
+                        'hoogte': int(post.get('%s-%s' % (line.id, 'hoogteWebshop'))),
+                        'breedte': int(post.get('%s-%s' % (line.id, 'breedteWebshop'))),
+                        'aantal': 1,
+                        'product_uom_qty': resultaatBerekening,
+                        'links': bool(post.get('%s-%s' % (line.id, 'linksWebshop'))),
+                        'rechts': bool(post.get('%s-%s' % (line.id, 'rechtsWebshop'))),
+                        'boven': bool(post.get('%s-%s' % (line.id, 'bovenWebshop'))),
+                        'onder': bool(post.get('%s-%s' % (line.id, 'onderWebshop'))),
+                        'boringen': post.get('%s-%s' % (line.id, 'boringenWebshop')),
+                        'opmerkingen': post.get('%s-%s' % (line.id, 'opmerkingenWebshop')),
 
-                })
-	    request.session['extra_info_done'] = True
+                    })
+            request.session['extra_info_done'] = True
             return request.redirect("/shop/extra")
         color_ids = pool['sale.order.colorpicker'].search(cr, uid, [('website_publish', '=', True)], context=context)
         colors = pool['sale.order.colorpicker'].browse(cr, uid, color_ids, context=context)
@@ -49,6 +49,6 @@ class website_yenth(website_sale):
 
     @http.route(['/shop/confirm_order'], type='http', auth="public", website=True)
     def confirm_order(self, **post):
-        if not request.session.get('extra_info_done'):             
-	    return request.redirect("/shop/extra")
+        if not request.session.get('extra_info_done'):
+            return request.redirect("/shop/extra")
         return super(website_yenth, self).confirm_order(**post)

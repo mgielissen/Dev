@@ -4,46 +4,46 @@
             <field name="name">sale.order.form.inherit</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
- 	    <field name="arch" type="xml">
-	        <xpath expr="//tree[@string='Sales Order Lines']/field[@name='name']" position="after">
-		    <field name="links"/>
-		    <field name="rechts"/>
-		    <field name="boven"/>
-		    <field name="onder"/>
-                    <field name="hoogte" on_change="on_change_hoeveelheid_berekenen(hoogte,breedte,aantal)"/>
-		    <field name="breedte" on_change="on_change_hoeveelheid_berekenen(hoogte,breedte,aantal)"/>
-                    <field name="aantal" on_change="on_change_hoeveelheid_berekenen(hoogte,breedte,aantal)"/>
-		    <field name="barcode"/>
-		    <field name="boringen"/>
-		    <field name="opmerkingen"/>
-		</xpath>
-		<xpath expr="//group/field[@name='client_order_ref']" position="after">
-		    <field name="kleurenpicker"/>
-		</xpath>
-	    </field>
+            <field name="arch" type="xml">
+              <xpath expr="//tree[@string='Sales Order Lines']/field[@name='name']" position="after">
+                  <field name="links"/>
+                  <field name="rechts"/>
+                  <field name="boven"/>
+                  <field name="onder"/>
+                  <field name="hoogte" on_change="on_change_hoeveelheid_berekenen(hoogte,breedte,aantal)"/>
+                  <field name="breedte" on_change="on_change_hoeveelheid_berekenen(hoogte,breedte,aantal)"/>
+                  <field name="aantal" on_change="on_change_hoeveelheid_berekenen(hoogte,breedte,aantal)"/>
+                  <field name="barcode"/>
+                  <field name="boringen"/>
+                  <field name="opmerkingen"/>
+              </xpath>
+              <xpath expr="//group/field[@name='client_order_ref']" position="after">
+                  <field name="kleurenpicker"/>
+              </xpath>
+            </field>
         </record>
 
         <record id="account.invoice_form_inherit90" model="ir.ui.view">
             <field name="name">account.invoice.form.inherit8</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
- 	    <field name="arch" type="xml">
-	        <xpath expr="//tree[@string='Invoice Lines']/field[@name='name']" position="after">
-		    <field name="links"/>
-		    <field name="rechts"/>
-		    <field name="boven"/>
-		    <field name="onder"/>
-                    <field name="hoogte" on_change="on_change_hoeveelheid_factuur_berekenen(hoogte,breedte,aantal)"/>
-		    <field name="breedte" on_change="on_change_hoeveelheid_factuur_berekenen(hoogte,breedte,aantal)"/>
-                    <field name="aantal" on_change="on_change_hoeveelheid_factuur_berekenen(hoogte,breedte,aantal)"/>
-		    <field name="barcode"/>		    
-		    <field name="boringen"/>
-		    <field name="opmerkingen"/>
-		</xpath>
-		<xpath expr="//group/field[@name='account_id']" position="after">
-		    <field name="kleurenpicker"/>
-		</xpath>
-	    </field>
+            <field name="arch" type="xml">
+              <xpath expr="//tree[@string='Invoice Lines']/field[@name='name']" position="after">
+                <field name="links"/>
+                <field name="rechts"/>
+                <field name="boven"/>
+                <field name="onder"/>
+                <field name="hoogte" on_change="on_change_hoeveelheid_factuur_berekenen(hoogte,breedte,aantal)"/>
+                <field name="breedte" on_change="on_change_hoeveelheid_factuur_berekenen(hoogte,breedte,aantal)"/>
+                <field name="aantal" on_change="on_change_hoeveelheid_factuur_berekenen(hoogte,breedte,aantal)"/>
+                <field name="barcode"/>
+                <field name="boringen"/>
+                <field name="opmerkingen"/>
+              </xpath>
+              <xpath expr="//group/field[@name='account_id']" position="after">
+                  <field name="kleurenpicker"/>
+              </xpath>
+            </field>
         </record>
 
         <template id="cart_inherits" inherit_id="website_sale.cart">
@@ -84,20 +84,6 @@
                   <h1 class="mb32">Extra info</h1>
                   <div class="row">
                     <form method="post" class="">
-			<!--<div class="row bg-info" style="padding:15px;margin-top:30px;border-radius:15px;">
-                    	        <h3>Kleur producten</h3>
-			<ul id="oe_systray" style="padding:15px;margin-top:30px;border-radius:15px;list-style:none;">
- 			    <li class="dropdown">
-                	        <a id="help-menu-button" class="dropdown-toggle" data-toggle="dropdown" href="#">
-				Kleur
-		    		<span class="caret"></span>
-                		</a>
-                		<ul class="dropdown-menu" role="menu" id="help-menu">
-		            		<li t-foreach="order.kleurenpicker" t-as="color" href="#" style="padding-left:10px;"><t t-esc="color.name"/></li>
-                		</ul>
-            		    </li>
-			</ul>
-		</div>-->
                         <div class="row bg-info" style="padding:15px;margin-top:30px;border-radius:15px;">
                           <h3>Kleur producten</h3>
                           <select name="color">
@@ -119,62 +105,46 @@
                             </div>
                             <div class="col-xs-6" style="width:70% !important;">
                               <div class="form-group">
-				<table>
-					<tr>
-						<td>
-							Hoogte
-						</td>
-						<td>
-							Breedte
-						</td>
-						<td>
-							Links
-						</td>
-						<td>
-							Rechts
-						</td>
-						<td>
-							Boven
-						</td>
-						<td>
-							Onder
-						</td>
-						<td>
-							Boringen
-						</td>
-						<td>
-							Opmerkingen
-						</td>
-					</tr>
-					<tr>
-						<td>
-<input type="digit" class="form-control" t-att-name="'%s-%s' % (line.id, 'hoogteWebshop')"/>
-						</td>
-						<td>
-<input type="digit" class="form-control" t-att-name="'%s-%s' % (line.id, 'breedteWebshop')"/>
-						</td>
-						<td>
-<input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'linksWebshop')"/>
-						</td>
-						<td>
-<input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'rechtsWebshop')"/>
-						</td>
-						<td>
-<input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'bovenWebshop')"/>
-						</td>
-						<td>
-<input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'onderWebshop')"/>
-						</td>
-						<td>
-<input type="text" class="form-control" t-att-name="'%s-%s' % (line.id, 'boringenWebshop')"/>
-						</td>
-						<td>
-<input type="text" class="form-control" t-att-name="'%s-%s' % (line.id, 'opmerkingenWebshop')"/>
-						</td>
-					</tr>
-				</table>
+                                <table>
+                                    <tr>
+                                        <td>Hoogte</td>
+                                        <td>Breedte</td>
+                                        <td>Links</td>
+                                        <td>Rechts</td>
+                                        <td>Boven</td>
+                                        <td>Onder</td>
+                                        <td>Boringen</td>
+                                        <td>Opmerkingen</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                          <input type="digit" class="form-control" t-att-name="'%s-%s' % (line.id, 'hoogteWebshop')"/>
+                                        </td>
+                                        <td>
+                                          <input type="digit" class="form-control" t-att-name="'%s-%s' % (line.id, 'breedteWebshop')"/>
+                                        </td>
+                                        <td>
+                                          <input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'linksWebshop')"/>
+                                        </td>
+                                        <td>
+                                          <input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'rechtsWebshop')"/>
+                                        </td>
+                                        <td>
+                                          <input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'bovenWebshop')"/>
+                                        </td>
+                                        <td>
+                                          <input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'onderWebshop')"/>
+                                        </td>
+                                        <td>
+                                          <input type="text" class="form-control" t-att-name="'%s-%s' % (line.id, 'boringenWebshop')"/>
+                                        </td>
+                                        <td>
+                                          <input type="text" class="form-control" t-att-name="'%s-%s' % (line.id, 'opmerkingenWebshop')"/>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-			</div>
+                          </div>
                         </div>
                         <input type="submit" class='btn btn-primary pull-right'/>
                     </form>
