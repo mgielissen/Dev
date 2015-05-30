@@ -85,14 +85,16 @@
                   <div class="row">
                     <form method="post" class="">
                         <div class="row bg-info" style="padding:15px;margin-top:30px;border-radius:15px;">
-                          <h3>Kleur producten</h3>
-                          <select name="color">
-                            <t t-foreach="colors" t-as="color">
-                              <option t-att-value='color.id'>
-                                <span t-field="color.name" />
-                              </option>
-                            </t>
-                          </select>
+                          <div class="form-inline form-group">
+                            <label for="color" class="h4">Kleur producten</label>
+                            <select id="color" name="color" class="form-control">
+                              <t t-foreach="colors" t-as="color">
+                                <option t-att-value='color.id'>
+                                  <span t-field="color.name" />
+                                </option>
+                              </t>
+                            </select>
+                          </div>
                         </div>
 
                         <div t-foreach="order.order_line" t-as="line" class="row bg-info" style="padding:15px;margin-top:30px;border-radius:15px;">
