@@ -47,25 +47,25 @@
         </record>
 
         <template id="cart_inherits" inherit_id="website_sale.cart">
-            <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="before">
+            <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace">
               <li><a class="text-muted">Extra<span class="chevron"></span></a></li>
             </xpath>
         </template>
 
         <template id="checkout_inherits" inherit_id="website_sale.checkout">
-            <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="before">
+            <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace">
               <li><a class="text-muted">Extra<span class="chevron"></span></a></li>
             </xpath>
         </template>
 
         <template id="payment_inherits" inherit_id="website_sale.payment">
-            <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="before">
+            <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace">
               <li><a href="/shop/extra" class="text-success">Extra<span class="chevron"></span></a></li>
             </xpath>
         </template>
 
         <template id="confirmation_inherits" inherit_id="website_sale.confirmation">
-            <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="before">
+            <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace">
               <li><a href="/shop/extra" class="text-success">Extra<span class="chevron"></span></a></li>
             </xpath>
         </template>
