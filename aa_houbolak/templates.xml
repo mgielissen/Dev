@@ -78,7 +78,6 @@
                       <li><a href="/shop/cart" class="text-success">Review Order<span class="chevron"></span></a></li>
                       <li><a href="/shop/checkout" class="text-success">Shipping &amp; Billing<span class="chevron"></span></a></li>
                       <li class="text-primary">Extra<span class="chevron"></span></li>
-                      <li class="text-muted">Payment<span class="chevron"></span></li>
                       <li class="text-muted">Confirmation<span class="chevron"></span></li>
                   </ul>
                   <h1 class="mb32">Extra info</h1>
