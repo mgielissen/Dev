@@ -24,10 +24,13 @@ class website_yenth(website_sale):
             return redirection
 
         def getField(post, sol_id, field, funct):
+            assert funct in [int, bool, str]
             try:
                 return funct(post.get('%s-%s' % (sol_id, field)))
             except:
-                return 0
+                if funct == str:
+                    return ''
+                return funct(0)
 
         if post:
             if post.get('color'):
