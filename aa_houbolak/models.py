@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api
+from openerp import models, fields
 from openerp.osv import osv
 
 
@@ -74,11 +74,9 @@ class sale_order_line_your_extension(osv.osv):
         rechts = False
         boven = False
         onder = False
-        kleur = ''
         barcode = ''
         boringen = ''
         opmerkingen = ''
-        kleur = ''
         if line.hoogte:
             hoogte = line.hoogte
         if line.breedte:
@@ -101,8 +99,6 @@ class sale_order_line_your_extension(osv.osv):
             boringen = line.boringen
         if line.opmerkingen:
             opmerkingen = line.opmerkingen
-        if self.kleurenpicker:
-            kleur = self.kleurenpicker
         ret['hoogte'] = hoogte
         ret['breedte'] = breedte
         ret['aantal'] = aantal
@@ -114,7 +110,6 @@ class sale_order_line_your_extension(osv.osv):
         ret['barcode'] = barcode
         ret['boringen'] = boringen
         ret['opmerkingen'] = opmerkingen
-        ret['kleurenpicker'] = kleur
         return ret
 
 
@@ -129,6 +124,11 @@ class sale_order_line_colorpicker(models.Model):
 class aa_houbolak_colorpicker_in_salemodel(models.Model):
     _inherit = 'sale.order'
     kleurenpicker = fields.Many2one('sale.order.colorpicker', 'Kleur')
+
+    def _prepare_invoice(self, cr, uid, order, lines, context=None):
+        res = super(aa_houbolak_colorpicker_in_salemodel, self)._prepare_invoice(cr, uid, order, lines, context=context)
+        res['kleurenpicker'] = order.kleurenpicker.id
+        return res
 
 
 #Add many2one (for color dropdown) to account.invoice
