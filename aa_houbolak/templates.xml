@@ -50,6 +50,22 @@
             <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace">
               <li><a class="text-muted">Extra<span class="chevron"></span></a></li>
             </xpath>
+            <!-- remove +/- to update quantity -->
+            <xpath expr="//div[contains(@class, 'oe_website_spinner')]" position="replace">
+              <b><t t-esc="int(line.product_uom_qty)"/></b>
+            </xpath>
+        </template>
+
+        <!-- disable +/- qty on product -->
+        <record model="ir.ui.view" id="website_sale.product_quantity">
+          <field name="active" eval="False"/>
+        </record>
+
+        <!-- force user to have only 1 quantity of a product in the cart -->
+        <template id="product" inherit_id='website_sale.product' name="Product">
+              <xpath expr="//a[@id='add_to_cart']" position="before">
+                  <input type="hidden" name="set_qty" value="1"/>
+              </xpath>
         </template>
 
         <template id="checkout_inherits" inherit_id="website_sale.checkout">
