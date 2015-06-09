@@ -14,6 +14,12 @@ class website_yenth(website_sale):
             return request.make_response("<h1> Color : %s added ...</h1>" % color)
         return request.make_response("<h1> Color param missing...</h1>")
 
+    @http.route(['/shop/final'], type='http', auth="public", website=True)
+    def final(self, **post):
+        cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
+        order = request.website.sale_get_order()
+        return request.website.render("aa_houbolak.final_step", dict(order=order))
+
     @http.route(['/shop/extra'], type='http', auth="public", website=True)
     def extra(self, **post):
         cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
@@ -22,6 +28,7 @@ class website_yenth(website_sale):
         redirection = self.checkout_redirection(order)
         if redirection:
             return redirection
+	    print('It is coming here.')
 
         def getField(post, sol_id, field, funct):
             assert funct in [int, bool, str]
@@ -54,7 +61,7 @@ class website_yenth(website_sale):
 
                     })
             request.session['extra_info_done'] = True
-            return request.redirect("/shop/payment/validate")
+            return request.redirect("/shop/final")
         color_ids = pool['sale.order.colorpicker'].search(cr, uid, [('website_publish', '=', True)], context=context)
         colors = pool['sale.order.colorpicker'].browse(cr, uid, color_ids, context=context)
         values = dict(order=order, colors=colors)
