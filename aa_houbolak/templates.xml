@@ -50,10 +50,10 @@
             <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace">
               <li><a class="text-muted">Extra<span class="chevron"></span></a></li>
             </xpath>
-            <!-- remove +/- to update quantity -->
-            <xpath expr="//div[contains(@class, 'input-group')]" position="replace">
+            <!-- remove +/- to update quantity 
+            <xpath expr="//div[contains(@class, 'oe_website_spinner')]" position="replace">
               <b><t t-esc="int(line.product_uom_qty)"/></b>
-            </xpath>
+            </xpath>-->
         </template>
 
         <!-- disable +/- qty on product -->
@@ -85,7 +85,51 @@
               <li><a href="/shop/extra" class="text-success">Extra<span class="chevron"></span></a></li>
             </xpath>
         </template>
+         
+        <template id="final_step">
+            <t t-call="website.layout">
+<t t-set="additional_title">Shop - Confirmed</t>
+      <div id="wrap">
+        <div class="container oe_website_sale">
 
+          <ul class="wizard pull-right">
+              <li class="text-muted">Review Order<span class="chevron"/></li>
+              <li class="text-muted">Shipping &amp; Billing<span class="chevron"/></li>
+              <li class="text-muted">Payment<span class="chevron"/></li>
+              <li class="text-primary">Confirmation<span class="chevron"/></li>
+          </ul>
+          <h1 class="mb32">Order <em t-field="order.name"/> Confirmed</h1>
+          <div class="row">
+              <div class="col-md-8 oe_cart">
+                  <h2>Thank you for your order.</h2>
+                  <!--<div class="oe_website_sale_tx_status" t-att-data-order-id="order.id">
+                    This was showing a message that there is an error with the request.
+                    
+                  </div>
+                  -->
+                  <div class="clearfix"/>
+                  <div class="oe_structure"/>
+              </div>
+              <div class="col-md-3 col-md-offset-1 text-muted" id="right_column">
+                <h4>Bill To:</h4>
+                <div t-field="order.partner_invoice_id" t-field-options="{                     &quot;widget&quot;: &quot;contact&quot;,                     &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;, &quot;email&quot;]                     }"/>
+                <t>
+                    <h4 class="mt32">Ship To:</h4>
+                    <t t-if="order.partner_shipping_id and order.partner_shipping_id.id != order.partner_invoice_id.id">
+                      <div t-field="order.partner_shipping_id" t-field-options="{                         &quot;widget&quot;: &quot;contact&quot;,                         &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;]                         }"/>
+                    </t>
+                    <address t-if="order.partner_shipping_id.id == order.partner_invoice_id.id">Ship to the same address</address>
+                </t>
+              </div>
+          </div>
+
+        </div>
+        <div class="oe_structure"/>
+      </div>
+
+            </t>
+        </template>
+                
         <template id="extra">
             <t t-call="website.layout">
               <div id="wrap">
@@ -118,6 +162,7 @@
                                 <br/>
                                 <span t-field="line.product_id.image_medium"
                                         t-field-options='{"widget": "image", "class": "img-rounded"}'/>
+
                             </div>
                             <div class="col-xs-6" style="width:70% !important;">
                               <div class="form-group">
@@ -134,10 +179,10 @@
                                     </tr>
                                     <tr>
                                         <td style="width:15%;">
-                                          <input type="digit" class="form-control" t-att-name="'%s-%s' % (line.id, 'hoogteWebshop')"/>
+                                          <input type="number" required="required" class="form-control" t-att-name="'%s-%s' % (line.id, 'hoogteWebshop')"/>
                                         </td>
                                         <td style="width:15%;">
-                                          <input type="digit" class="form-control" t-att-name="'%s-%s' % (line.id, 'breedteWebshop')"/>
+                                          <input type="number" required="required" class="form-control" t-att-name="'%s-%s' % (line.id, 'breedteWebshop')"/>
                                         </td>
                                         <td style="width:9%;">
                                           <input type="checkbox" class="form-control" t-att-name="'%s-%s' % (line.id, 'linksWebshop')"/>
@@ -162,15 +207,16 @@
                             </div>
                           </div>
                         </div>
-                        <input type="submit" class='btn btn-primary pull-right' placeholder='Bevestigen'/>
+                        <input type="submit" class='btn btn-primary pull-right' value='Bevestigen'/>
                     </form>
                   </div>
                 </div>
               </div>
             </t>
         </template>
-        
-        	<!--Extra menu item sales -->
+
+
+	<!--Extra menu item sales -->
         <record id="action_color_picker" model="ir.actions.act_window">
             <field name="name">Kleuren</field>
             <field name="type">ir.actions.act_window</field>
@@ -204,6 +250,11 @@
                 </tree>
             </field>
         </record>
+
+        <template id="validator_js" inherit_id="website.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/additional-methods.min.js" />
+            </xpath> 
+        </template>
     </data>
 </openerp>
-
