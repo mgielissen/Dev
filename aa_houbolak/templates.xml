@@ -50,10 +50,10 @@
             <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace">
               <li><a class="text-muted">Extra<span class="chevron"></span></a></li>
             </xpath>
-            <!-- remove +/- to update quantity 
-            <xpath expr="//div[contains(@class, 'oe_website_spinner')]" position="replace">
+            <!-- remove +/- to update quantity -->
+            <xpath expr="//div[contains(@class, 'input-group')]" position="replace">
               <b><t t-esc="int(line.product_uom_qty)"/></b>
-            </xpath>-->
+            </xpath>
         </template>
 
         <!-- disable +/- qty on product -->
