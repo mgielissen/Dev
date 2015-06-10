@@ -88,44 +88,46 @@
          
         <template id="final_step">
             <t t-call="website.layout">
-<t t-set="additional_title">Shop - Confirmed</t>
-      <div id="wrap">
-        <div class="container oe_website_sale">
+              <t t-set="additional_title">Shop - Thank you</t>
+              <div id="wrap">
+                <div class="container oe_website_sale">
 
-          <ul class="wizard pull-right">
-              <li class="text-muted">Review Order<span class="chevron"/></li>
-              <li class="text-muted">Shipping &amp; Billing<span class="chevron"/></li>
-              <li class="text-muted">Payment<span class="chevron"/></li>
-              <li class="text-primary">Confirmation<span class="chevron"/></li>
-          </ul>
-          <h1 class="mb32">Order <em t-field="order.name"/> Confirmed</h1>
-          <div class="row">
-              <div class="col-md-8 oe_cart">
-                  <h2>Thank you for your order.</h2>
-                  <!--<div class="oe_website_sale_tx_status" t-att-data-order-id="order.id">
-                    This was showing a message that there is an error with the request.
-                    
+                  <ul class="wizard pull-right">
+                      <li class="text-muted">Review Order<span class="chevron"/></li>
+                      <li class="text-muted">Shipping &amp; Billing<span class="chevron"/></li>
+                      <li class="text-primary">Confirmation<span class="chevron"/></li>
+                  </ul>
+                  <h1 class="mb32">Order <em t-field="order.name"/> Confirmed</h1>
+                  <div class="row">
+                      <div class="col-md-8 oe_cart">
+                          <h2>Thank you for your order.</h2>
+                          <div class="clearfix"/>
+                          <div class="oe_structure"/>
+                      </div>
+                      <div class="col-md-3 col-md-offset-1 text-muted" id="right_column">
+                        <h4>Bill To:</h4>
+                        <div t-field="order.partner_invoice_id" t-field-options="{
+                          &quot;widget&quot;: &quot;contact&quot;,
+                          &quot;fields&quot;: [
+                            &quot;address&quot;,
+                            &quot;name&quot;,
+                            &quot;phone&quot;,
+                            &quot;email&quot;
+                          ]
+                        }"/>
+                        <t>
+                            <h4 class="mt32">Ship To:</h4>
+                            <t t-if="order.partner_shipping_id and order.partner_shipping_id.id != order.partner_invoice_id.id">
+                              <div t-field="order.partner_shipping_id" t-field-options="{                         &quot;widget&quot;: &quot;contact&quot;,                         &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;]                         }"/>
+                            </t>
+                            <address t-if="order.partner_shipping_id.id == order.partner_invoice_id.id">Ship to the same address</address>
+                        </t>
+                      </div>
                   </div>
-                  -->
-                  <div class="clearfix"/>
-                  <div class="oe_structure"/>
-              </div>
-              <div class="col-md-3 col-md-offset-1 text-muted" id="right_column">
-                <h4>Bill To:</h4>
-                <div t-field="order.partner_invoice_id" t-field-options="{                     &quot;widget&quot;: &quot;contact&quot;,                     &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;, &quot;email&quot;]                     }"/>
-                <t>
-                    <h4 class="mt32">Ship To:</h4>
-                    <t t-if="order.partner_shipping_id and order.partner_shipping_id.id != order.partner_invoice_id.id">
-                      <div t-field="order.partner_shipping_id" t-field-options="{                         &quot;widget&quot;: &quot;contact&quot;,                         &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;]                         }"/>
-                    </t>
-                    <address t-if="order.partner_shipping_id.id == order.partner_invoice_id.id">Ship to the same address</address>
-                </t>
-              </div>
-          </div>
 
-        </div>
-        <div class="oe_structure"/>
-      </div>
+                </div>
+                <div class="oe_structure"/>
+              </div>
 
             </t>
         </template>

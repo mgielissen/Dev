@@ -2,6 +2,7 @@
 
 from openerp import models, fields
 from openerp.osv import osv
+from openerp.addons.web.http import request
 
 
 class aa_houbolak(models.Model):
@@ -135,3 +136,11 @@ class aa_houbolak_colorpicker_in_salemodel(models.Model):
 class aa_houbolak_colorpicker_in_accountmodel(models.Model):
     _inherit = 'account.invoice'
     kleurenpicker = fields.Many2one('sale.order.colorpicker', 'Kleur')
+
+
+class website(models.Model):
+    _inherit = 'website'
+
+    def sale_reset(self, cr, uid, ids, context=None):
+        super(website, self).sale_reset(cr, uid, ids, context=context)
+        request.session.update(dict(extra_info_done=False))
