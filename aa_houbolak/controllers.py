@@ -5,19 +5,19 @@ from openerp.addons.website_sale.controllers.main import website_sale
 
 
 class website_yenth(website_sale):
-    @http.route(['/shop/extra_add_color'], type='http', auth="public", website=True)
-    def add_color(self, **post):
-        if post.get('color'):
-            color = post.get('color')
-            cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
-            pool['sale.order.colorpicker'].create(cr, uid, {'name': color, 'website_publish': True}, context=context)
-            return request.make_response("<h1> Color : %s added ...</h1>" % color)
-        return request.make_response("<h1> Color param missing...</h1>")
 
     @http.route(['/shop/final'], type='http', auth="public", website=True)
     def final(self, **post):
-        cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
+        if not request.session.get('extra_info_done'):
+            return request.redirect("/shop/extra")
+
         order = request.website.sale_get_order()
+        if order and order.state == 'draft':
+            # change state here to know that user was in final step and dont stop during extra step
+            order.write(dict(state='progress'))
+        # reset current order from the backend,
+        # will start new order
+        request.website.sale_reset()
         return request.website.render("aa_houbolak.final_step", dict(order=order))
 
     @http.route(['/shop/extra'], type='http', auth="public", website=True)
@@ -28,7 +28,6 @@ class website_yenth(website_sale):
         redirection = self.checkout_redirection(order)
         if redirection:
             return redirection
-	    print('It is coming here.')
 
         def getField(post, sol_id, field, funct):
             assert funct in [int, bool, str]
@@ -76,11 +75,5 @@ class website_yenth(website_sale):
 
     @http.route(['/shop/payment'], type='http', auth="public", website=True)
     def payment(self, **post):
-        if not request.session.get('extra_info_done'):
-            return request.redirect("/shop/extra")
-        return super(website_yenth, self).payment(**post)
-
-    @http.route('/shop/payment/validate', type='http', auth="public", website=True)
-    def payment_validate(self, transaction_id=None, sale_order_id=None, **post):
-        request.session['extra_info_done'] = False
-        return super(website_yenth, self).payment_validate(transaction_id=transaction_id, sale_order_id=sale_order_id, **post)
+        # should be never in this controller
+        return request.redirect("/shop/final")
