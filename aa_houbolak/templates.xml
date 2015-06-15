@@ -19,6 +19,7 @@
               </xpath>
               <xpath expr="//group/field[@name='client_order_ref']" position="after">
                   <field name="kleurenpicker"/>
+		  <field name="afwerkingpicker"/>
               </xpath>
             </field>
         </record>
@@ -42,6 +43,7 @@
               </xpath>
               <xpath expr="//group/field[@name='account_id']" position="after">
                   <field name="kleurenpicker"/>
+		  <field name="afwerkingpicker"/>
               </xpath>
             </field>
         </record>
@@ -97,10 +99,10 @@
                       <li class="text-muted">Shipping &amp; Billing<span class="chevron"/></li>
                       <li class="text-primary">Confirmation<span class="chevron"/></li>
                   </ul>
-                  <h1 class="mb32">Order <em t-field="order.name"/> Confirmed</h1>
+                  <h1 class="mb32">Order <em t-field="order.name"/> bevestigd</h1>
                   <div class="row">
                       <div class="col-md-8 oe_cart">
-                          <h2>Thank you for your order.</h2>
+                          <h2>Bedankt voor uw order!</h2>
                           <div class="clearfix"/>
                           <div class="oe_structure"/>
                       </div>
@@ -247,6 +249,41 @@
             <field name="model">sale.order.colorpicker</field>
             <field name="arch" type="xml">
                 <tree string="Onze kleuren">
+				<field name="name"/>
+				<field name="website_publish"/>
+                </tree>
+            </field>
+        </record>
+
+	<!--Extra menu item for finishing -->
+        <record id="action_finishing_picker" model="ir.actions.act_window">
+            <field name="name">Afwerking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order.finishing</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref=""/>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <menuitem id="menu_our_finishing"
+                action="action_finishing_picker" parent="base.menu_sales"
+                sequence="14"/>
+       <record id="view_kleuren_form" model="ir.ui.view">
+            <field name="name">sale.order.finishing.form</field>
+            <field name="model">sale.order.finishing</field>
+            <field name="arch" type="xml">
+                <form string="Onze afwerkingen">
+			<group>
+				<field name="name"/>
+				<field name="website_publish"/>
+			</group>
+                </form>
+            </field>
+        </record>
+       <record id="view_finishing_tree" model="ir.ui.view">
+            <field name="name">sale.order.finishing.tree</field>
+            <field name="model">sale.order.finishing</field>
+            <field name="arch" type="xml">
+                <tree string="Onze afwerkingen">
 				<field name="name"/>
 				<field name="website_publish"/>
                 </tree>
