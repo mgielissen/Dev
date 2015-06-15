@@ -146,6 +146,11 @@ class aa_houbolak_colorpicker_in_accountmodel(models.Model):
     kleurenpicker = fields.Many2one('sale.order.colorpicker', 'Kleur')
     afwerkingpicker = fields.Many2one('sale.order.finishing','Afwerking')
 
+#Add many2many (for finishing on product) to product.template
+class aa_houbolak_finishing_in_product_model(models.Model):
+    _inherit = 'product.template'
+    afwerkingpickerProduct = fields.Many2many('sale.order.finishing','product_finishing_rel','src_id_finishing','dest_id_finishing',string='Afwerking(en):')
+
 
 class website(models.Model):
     _inherit = 'website'
