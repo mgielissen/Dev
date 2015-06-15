@@ -120,15 +120,23 @@ class sale_order_line_colorpicker(models.Model):
     name = fields.Char('Name', required=True)
     website_publish = fields.Boolean('Published')
 
+class sale_order_line_finishingpicker(models.Model):
+    _name = 'sale.order.finishing'
+    _description = 'Voor dropdown van afwerkingen bij offerte/order/factuur'
+    name = fields.Char('Name', required=True)
+    website_publish = fields.Boolean('Published')
+
 
 #Add many2one (for color dropdown) to sale.order
 class aa_houbolak_colorpicker_in_salemodel(models.Model):
     _inherit = 'sale.order'
     kleurenpicker = fields.Many2one('sale.order.colorpicker', 'Kleur')
+    afwerkingpicker = fields.Many2one('sale.order.finishing','Afwerking')
 
     def _prepare_invoice(self, cr, uid, order, lines, context=None):
         res = super(aa_houbolak_colorpicker_in_salemodel, self)._prepare_invoice(cr, uid, order, lines, context=context)
         res['kleurenpicker'] = order.kleurenpicker.id
+        res['afwerkingpicker'] = order.afwerkingpicker.id
         return res
 
 
@@ -136,6 +144,7 @@ class aa_houbolak_colorpicker_in_salemodel(models.Model):
 class aa_houbolak_colorpicker_in_accountmodel(models.Model):
     _inherit = 'account.invoice'
     kleurenpicker = fields.Many2one('sale.order.colorpicker', 'Kleur')
+    afwerkingpicker = fields.Many2one('sale.order.finishing','Afwerking')
 
 
 class website(models.Model):
