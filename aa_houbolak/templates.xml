@@ -289,6 +289,20 @@
                 </tree>
             </field>
         </record>
+        
+        <!-- Inherit product view -->
+        <record id="product.product_template_only_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.template.product.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='description']" position="before">
+		<group>
+                  <field name="afwerkingpickerProduct"/>
+		</group>
+              </xpath>
+            </field>
+        </record>
 
         <template id="validator_js" inherit_id="website.assets_frontend">
             <xpath expr="." position="inside">
