@@ -2,6 +2,8 @@
 from openerp import http
 from openerp.http import request
 from openerp.addons.website_sale.controllers.main import website_sale
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class website_yenth(website_sale):
@@ -19,6 +21,29 @@ class website_yenth(website_sale):
         # will start new order
         request.website.sale_reset()
         return request.website.render("aa_houbolak.final_step", dict(order=order))
+
+    #Make a redirect first.
+    @http.route(['/shop'], type='http', auth="public", website=True)
+    def redirect(self, **post):
+	return request.redirect("/shop/categoryselection")
+	
+
+    #Page that shows dropdown for all kind of finishing types
+    @http.route(['/shop/categoryselection'], type='http', auth="public", website=True)
+    def categoryselection(self, **post):
+	cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
+        order = request.website.sale_get_order()
+	finishing_ids = pool['sale.order.finishing'].search(cr, uid, [('website_publish', '=', True)], context=context)
+        afwerkingen = pool['sale.order.finishing'].browse(cr, uid, finishing_ids, context=context)
+        values = dict(order=order, afwerkingen=afwerkingen)
+
+        if post:
+	    _logger.warning("in if post:")
+            if post.get('afwerking'):
+		_logger.warning("in if post.get")
+                order.write({'afwerkingpicker': int(post.get('afwerking'))})
+            return request.redirect("/shop")
+        return request.website.render("aa_houbolak.categoryselection", values)
 
     @http.route(['/shop/extra'], type='http', auth="public", website=True)
     def extra(self, **post):
