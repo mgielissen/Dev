@@ -19,5 +19,16 @@ $(document).ready(function () {
 
             return !error;
         })
+
+        $('div.deleteMe i').on('click', function(o) {
+            openerp.jsonRpc("/shop/cart/update_json", 'call', {
+                'line_id': $(this).closest('tr').find('input').data('line-id'),
+                'product_id': $(this).closest('tr').find('input').data('product-id'),
+                'set_qty': 0})
+            .then(function (data) {
+                // refresh since line is removed
+                location.reload();
+            });
+        });
     });
 })

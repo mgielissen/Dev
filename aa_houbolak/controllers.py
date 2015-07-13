@@ -78,11 +78,12 @@ class website_yenth(website_sale):
 
     @http.route(['/shop/cart/update'], type='http', auth="public", methods=['POST'], website=True)
     def cart_update(self, product_id, add_qty=1, set_qty=0, **kw):
-        res = super(website_yenth, self).cart_update(product_id, add_qty=1, set_qty=1, **kw)
+        MIN_QTY = 1
+        resp = request.website.sale_get_order(force_create=1)._cart_update(product_id=int(product_id), add_qty=float(add_qty), set_qty=float(set_qty), line_id=False)
         order = request.website.sale_get_order()
         values = {}
         for line in order.order_line:
-            if line.product_id.id == int(product_id):
+            if line.id == resp.get('line_id'):
                 if not order.afwerkingpicker:
                     values = {'afwerkingpicker': request.session['aa_houbolak_afwerking']}
                 resultaatBerekening = int(kw.get('hoogteWebshop')) * int(kw.get('breedteWebshop')) / 1000000 * 1
@@ -90,7 +91,7 @@ class website_yenth(website_sale):
                     'hoogte': int(kw.get('hoogteWebshop')),
                     'breedte': int(kw.get('breedteWebshop')),
                     'aantal': 1,
-                    'product_uom_qty': resultaatBerekening,
+                    'product_uom_qty': max(resultaatBerekening, MIN_QTY),
                     'links': bool(kw.get('linksWebshop')),
                     'rechts': bool(kw.get('rechtsWebshop')),
                     'boven': bool(kw.get('bovenWebshop')),
@@ -100,4 +101,4 @@ class website_yenth(website_sale):
                 })]
                 order.write(values)
                 break
-        return res
+        return request.redirect("/shop/cart")
