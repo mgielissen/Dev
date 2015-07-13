@@ -51,7 +51,7 @@
     <template id="cart_inherits" inherit_id="website_sale.cart" priority="1000">
       <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace"/>
       <xpath expr="//ul[contains(@class, 'wizard')]/li[2]" position="before">
-        <li><a class="text-muted">Extra<span class="chevron"></span></a></li>
+        <li><a class="text-muted">Kleur<span class="chevron"></span></a></li>
       </xpath>
       <xpath expr="//a[contains(@href, '/shop/checkout')]/span[1]" position="replace">
         <span>Next </span>
@@ -69,17 +69,17 @@
     </template>
 
     <!-- disable +/- qty on product -->
-    <record model="ir.ui.view" id="website_sale.product_quantity">
+    <!--<record model="ir.ui.view" id="website_sale.product_quantity">
       <field name="active" eval="False"/>
     </record>
 
     <template id="products" inherit_id='website_sale.products' name="Products">
       <xpath expr="//t[@t-call='website_sale.search']" position="before">
         <t t-if="not request.website.sale_get_order() or not len(request.website.sale_get_order().order_line)">
-          <a href="/shop/afwerking"><i class="fa fa-sliders"/> Change Afwerking</a>
+          <a href="/shop/afwerking"><i class="fa fa-sliders"/> Wijzig type afwerking</a>
         </t>
       </xpath>
-    </template>
+    </template>-->
 
     <template id="product" inherit_id='website_sale.product' name="Product">
       <xpath expr="//a[@id='add_to_cart']" position="before">
@@ -98,25 +98,25 @@
         <div class="form-group row">
           <label for="linksWebshop" class="col-sm-4 control-label">Links</label>
           <div class="col-sm-4">
-              <input type="checkbox" name="linksWebshop" id="linksWebshop" />
+            <input type="checkbox" name="linksWebshop" id="linksWebshop" />
           </div>
         </div>
         <div class="form-group row">
           <label for="rechtsWebshop" class="col-sm-4 control-label">Rechts</label>
           <div class="col-sm-4">
-              <input type="checkbox" name="rechtsWebshop" id="rechtsWebshop" />
+            <input type="checkbox" name="rechtsWebshop" id="rechtsWebshop" />
           </div>
         </div>
         <div class="form-group row">
           <label for="bovenWebshop" class="col-sm-4 control-label">Boven</label>
           <div class="col-sm-4">
-              <input type="checkbox" name="bovenWebshop" id="bovenWebshop" />
+            <input type="checkbox" name="bovenWebshop" id="bovenWebshop" />
           </div>
         </div>
         <div class="form-group row">
           <label for="onderWebshop" class="col-sm-4 control-label">Onder</label>
           <div class="col-sm-4">
-              <input type="checkbox" name="onderWebshop" id="onderWebshop" />
+            <input type="checkbox" name="onderWebshop" id="onderWebshop" />
           </div>
         </div>
         <div class="form-group row">
@@ -137,14 +137,15 @@
     <template id="checkout_inherits" inherit_id="website_sale.checkout">
       <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace"/>
       <xpath expr="//ul[contains(@class, 'wizard')]/li[2]" position="before">
-        <li><a href="/shop/extra" class="text-success">Extra<span class="chevron"></span></a></li>
+        <li><a href="/shop/extra" class="text-success">Kleur<span class="chevron"></span></a></li>
       </xpath>
     </template>
 
+    <!--Inherits the page from /shop/confirmation and changes the menu items -->
     <template id="confirmation_inherits" inherit_id="website_sale.confirmation">
       <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace"/>
       <xpath expr="//ul[contains(@class, 'wizard')]/li[2]" position="before">
-        <li><a href="/shop/extra" class="text-success">Extra<span class="chevron"></span></a></li>
+        <li><a href="/shop/extra" class="text-success">Kleur<span class="chevron"></span></a></li>
       </xpath>
     </template>
 
@@ -184,11 +185,11 @@
           <div class="container oe_website_sale">
             <ul class="wizard pull-right">
               <li><a href="/shop/cart" class="text-success">Review Order<span class="chevron"></span></a></li>
-              <li class="text-primary">Extra<span class="chevron"></span></li>
+              <li class="text-primary">Kleur<span class="chevron"></span></li>
               <li class="text-muted">Shipping &amp; Billing<span class="chevron"></span></li>
               <li class="text-muted">Confirmation<span class="chevron"></span></li>
             </ul>
-            <h1 class="mb32">Extra info</h1>
+            <h1 class="mb32">Kleur info</h1>
             <div class="row">
               <form method="post" class="">
                 <div class="row bg-info" style="padding:15px;margin-top:30px;border-radius:15px;">
@@ -302,6 +303,96 @@
         <script type="text/javascript" src="/aa_houbolak/static/src/js/additional-methods.js" />
         <script type="text/javascript" src="/aa_houbolak/static/src/js/houbolak.js"></script>
       </xpath>
+    </template>
+
+
+    <template id="cart_inherit_custom" inherit_id='website_sale.cart' name="Shopping Cart">
+      <xpath expr="//table[@id='cart_products']" position="replace">
+        <table class='table table-striped table-condensed' id="cart_products" t-if="website_sale_order and website_sale_order.website_order_line">
+          <thead>
+            <tr>
+              <th colspan="2" width="100">Product</th>
+              <th>Hoogte</th>
+              <th>Breedte</th>
+              <th></th>
+              <th width="100">Price</th>
+              <th width="120">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <t t-foreach="website_sale_order.website_order_line" t-as="line">
+              <tr id="t-foreach-shop-overview">
+                <td colspan="2" t-if="not line.product_id.product_tmpl_id"></td>
+                <td align="center" t-if="line.product_id.product_tmpl_id">
+                  <span t-field="line.product_id.image_small"
+                    t-field-options='{"widget": "image", "class": "img-rounded"}'/>
+                  </td>
+                  <td t-if="line.product_id.product_tmpl_id">
+                    <div>
+                      <a t-attf-href="/shop/product/#{ slug(line.product_id.product_tmpl_id) }">
+                        <strong t-esc="line.product_id.name_get()[0][1]"/>
+                      </a>
+                    </div>
+                    <div class="text-muted" t-field="line.name"/>
+                  </td>
+                  <td><span t-field="line.hoogte"/></td>
+                  <td><span t-field="line.breedte"/></td>
+                  <td></td>
+                  <td class="text-center" name="price">
+                    <t t-if="(compute_currency(line.product_id.lst_price) - line.price_unit) &gt; 0.01">
+                      <del class="text-danger" style="white-space: nowrap;"
+                        t-field="line.product_id.lst_price" t-field-options='{
+                        "widget": "monetary",
+                        "from_currency": "website.currency_id",
+                        "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                        }'/>&amp;nbsp;
+                      </t>
+                      <span t-field="line.price_unit" style="white-space: nowrap;" t-field-options='{
+                       "widget": "monetary",
+                       "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                       }'/>
+                     </td>
+                     <td class="text-center">
+                       <div class="input-group">
+                         <input type="text" class="form-control js_quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty)" readonly="readonly"/>
+                         <div class="input-group-addon"><i class='fa fa-times' onclick="javascript:$('input.js_quantity').val(0).change()" />
+                       </div>
+                     </div>
+                   </td>
+                 </tr>
+                 <tr style="background-color:#F9F9F9">
+                  <td>
+                    <b>Links</b><br/>
+                    <input type="checkbox"  t-att-checked="line.links" disabled="disabled"/>
+                  </td>
+                  <td>
+                    <b>Rechts</b><br/>
+                    <input type="checkbox"  t-att-checked="line.rechts" disabled="disabled"/>
+                  </td>
+                  <td>
+                    <b>Boven</b><br/>
+                    <input type="checkbox"  t-att-checked="line.boven" disabled="disabled"/>
+                  </td>
+                  <td>
+                    <b>Onder</b><br/>
+                    <input type="checkbox"  t-att-checked="line.onder" disabled="disabled"/>
+                  </td>
+                  <td>
+                   <b>Boring</b><br/>
+                   <span t-esc="line.boringen"/>
+                 </td>
+                 <td colspan="2">
+                  <b>Opmerking</b><br/>
+                  <span t-esc="line.opmerkingen"/>
+                </td>
+              </tr>
+              <tr style="height:30px !important;">
+              </tr>
+            </t>
+          </tbody>
+        </table>
+      </xpath>
+
     </template>
   </data>
 </openerp>
