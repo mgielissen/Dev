@@ -3,32 +3,24 @@
     'name': "aa_houbolak",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Customization of Ecommerce adding new fields at cart update""",
 
     'description': """
-        Long description of module's purpose
+        Customization for Yenth specifications...
+        1) Customer opens shop and clicks on 'shop'
+         => he first has to choose a selection type from the dropdown finishing
+        2) The user clicks on the button 'Bevestigen' and gets redirected to
+         /shop where only products are shown that match the selected finishing.
+        3) The user can select products and add them to the cart and add the
+         extra things that need to be filled in on the products page
+        4) Extra page to select color.
     """,
-
-    'author': "Your Company",
-    'website': "http://www.yourcompany.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'Uncategorized',
-    'version': '0.1',
-
-    # any module necessary for this one to work correctly
-    'depends': ['sale','product','account','website_sale'],
-
-    # always loaded
+    'author': "Jeremy Kersten",
+    'category': 'Sales',
+    'version': '0.2',
+    'depends': ['website_sale'],
     'data': [
         'security/ir.model.access.csv',
         'templates.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo.xml',
     ],
 }

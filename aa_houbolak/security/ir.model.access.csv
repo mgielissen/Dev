@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_sale_order_colorpicker,access_sale_order_colorpicker,model_sale_order_colorpicker,,1,0,0,0
 access_sale_order_colorpicker_user,access_sale_order_colorpicker_user,model_sale_order_colorpicker,base.group_user,1,1,1,0
+access_sale_order_finishing,access_sale_order_finishing,model_sale_order_finishing,,1,0,0,0
+access_sale_order_finishing_user,access_sale_order_finishing_user,model_sale_order_finishing,base.group_user,1,1,1,0
