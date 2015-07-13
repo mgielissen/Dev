@@ -26,7 +26,7 @@ class website_yenth(website_sale):
         if post and post.get('color'):
             order.write({'kleurenpicker': int(post.get('color'))})
             request.session['extra_info_done'] = True
-            return request.redirect("/shop/checkout")
+            return request.redirect("/shop/final")
         color_ids = pool['sale.order.colorpicker'].search(cr, uid, [('website_publish', '=', True)], context=context)
         colors = pool['sale.order.colorpicker'].browse(cr, uid, color_ids, context=context)
         values = dict(order=order, colors=colors)
@@ -48,8 +48,8 @@ class website_yenth(website_sale):
     @http.route(['/shop/confirm_order'], type='http', auth="public", website=True)
     def confirm_order(self, **post):
         response = super(website_yenth, self).confirm_order(**post)
-        if response.location == "/shop/checkout":
-            response = request.redirect("/shop/final")
+        if response.location == "/shop/payment":
+            response = request.redirect("/shop/extra")
         return response
 
     @http.route(['/shop/payment'], type='http', auth="public", website=True)

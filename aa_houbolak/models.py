@@ -15,9 +15,9 @@ class aa_houbolak(models.Model):
     rechts = fields.Boolean(string='R')
     boven = fields.Boolean(string='B')
     onder = fields.Boolean(string='O')
-    barcode = fields.Char('Bar')
-    boringen = fields.Char('Bor')
-    opmerkingen = fields.Char('Opm.')
+    barcode = fields.Char()
+    boringen = fields.Char()
+    opmerkingen = fields.Char()
 
     def on_change_hoeveelheid_berekenen(self, cr, uid, ids, hoogte, breedte, aantal):
         resultaat = hoogte * breedte / 1000000 * aantal
