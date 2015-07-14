@@ -68,10 +68,12 @@
       </xpath>
     </template>
 
-    <!-- disable +/- qty on product -->
-    <!--<record model="ir.ui.view" id="website_sale.product_quantity">
+    <!-- disable +/- qty on product page (shop/product/<product_id>) -->
+    <record model="ir.ui.view" id="website_sale.product_quantity">
       <field name="active" eval="False"/>
     </record>
+
+    <!--  WITHOUT IT, A USER CAN NOT CHANGE THE AFWERKING EVEN IF NO PRODUCT IN CART :(
 
     <template id="products" inherit_id='website_sale.products' name="Products">
       <xpath expr="//t[@t-call='website_sale.search']" position="before">
@@ -145,8 +147,10 @@
     <template id="confirmation_inherits" inherit_id="website_sale.confirmation">
       <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace"/>
       <xpath expr="//ul[contains(@class, 'wizard')]/li[2]" position="before">
-        <li><a href="/shop/extra" class="text-success">Kleur<span class="chevron"></span></a></li>
+        <li class="text-muted">Kleur<span class="chevron"></span></li>
       </xpath>
+      <!-- remove this div, to avoid the payment pooling -->
+      <xpath expr="//div[@t-att-data-order-id]" position="replace"/>
     </template>
 
     <template id="categoryselection">
