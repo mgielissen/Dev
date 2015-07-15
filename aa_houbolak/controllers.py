@@ -86,11 +86,11 @@ class website_yenth(website_sale):
             if line.id == resp.get('line_id'):
                 if not order.afwerkingpicker:
                     values = {'afwerkingpicker': request.session['aa_houbolak_afwerking']}
-                resultaatBerekening = int(kw.get('hoogteWebshop')) * int(kw.get('breedteWebshop')) / 1000000 * 1
+                resultaatBerekening = int(kw.get('hoogteWebshop')) * int(kw.get('breedteWebshop')) / 1000000 * add_qty
                 values['order_line'] = [(1, line.id, {
                     'hoogte': int(kw.get('hoogteWebshop')),
                     'breedte': int(kw.get('breedteWebshop')),
-                    'aantal': 1,
+                    'aantal': add_qty,
                     'product_uom_qty': max(resultaatBerekening, MIN_QTY),
                     'links': bool(kw.get('linksWebshop')),
                     'rechts': bool(kw.get('rechtsWebshop')),

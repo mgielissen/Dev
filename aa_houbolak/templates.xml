@@ -69,9 +69,9 @@
     </template>
 
     <!-- disable +/- qty on product page (shop/product/<product_id>) -->
-    <record model="ir.ui.view" id="website_sale.product_quantity">
+    <!-- <record model="ir.ui.view" id="website_sale.product_quantity">
       <field name="active" eval="False"/>
-    </record>
+    </record> -->
 
     <!--  WITHOUT IT, A USER CAN NOT CHANGE THE AFWERKING EVEN IF NO PRODUCT IN CART :(
 
