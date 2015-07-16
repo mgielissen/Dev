@@ -7,7 +7,7 @@ $(document).ready(function () {
         $('#opmerkingenWebshop').closest('form').on('submit', function(o) {
             $('form-group').removeClass('has-error');
 
-            var required = ['#opmerkingenWebshop', '#breedteWebshop', '#hoogteWebshop', '#boringenWebshop'];
+            var required = ['#breedteWebshop', '#hoogteWebshop', '#boringenWebshop'];
             var error = false;
 
             $(required).each(function(i, x) {

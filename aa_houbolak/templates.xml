@@ -59,30 +59,7 @@
       <xpath expr="//a[contains(@href, '/shop/checkout')]" position="attributes">
         <attribute name="href">/shop/extra</attribute>
       </xpath>
-      <!-- remove +/- to update quantity -->
-      <xpath expr="//div[contains(@class, 'input-group')]" position="replace">
-        <div class="input-group">
-          <input type="text" class="form-control js_quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty)" readonly="readonly" />
-          <div class="input-group-addon deleteMe"><i class='fa fa-times'/></div>
-        </div>
-      </xpath>
     </template>
-
-    <!-- disable +/- qty on product page (shop/product/<product_id>) -->
-    <!-- <record model="ir.ui.view" id="website_sale.product_quantity">
-      <field name="active" eval="False"/>
-    </record> -->
-
-    <!--  WITHOUT IT, A USER CAN NOT CHANGE THE AFWERKING EVEN IF NO PRODUCT IN CART :(
-
-    <template id="products" inherit_id='website_sale.products' name="Products">
-      <xpath expr="//t[@t-call='website_sale.search']" position="before">
-        <t t-if="not request.website.sale_get_order() or not len(request.website.sale_get_order().order_line)">
-          <a href="/shop/afwerking"><i class="fa fa-sliders"/> Wijzig type afwerking</a>
-        </t>
-      </xpath>
-    </template>-->
-
     <template id="product" inherit_id='website_sale.product' name="Product">
       <xpath expr="//a[@id='add_to_cart']" position="before">
         <div class="form-group row">
@@ -124,7 +101,7 @@
         <div class="form-group row">
           <label for="boringenWebshop" class="col-sm-4 control-label">Boringen</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="boringenWebshop" name="boringenWebshop" />
+            <input type="text" class="form-control" id="boringenWebshop" name="boringenWebshop" value="Standaard" />
           </div>
         </div>
         <div class="form-group row">
@@ -147,10 +124,8 @@
     <template id="confirmation_inherits" inherit_id="website_sale.confirmation">
       <xpath expr="//ul[contains(@class, 'wizard')]/li[3]" position="replace"/>
       <xpath expr="//ul[contains(@class, 'wizard')]/li[2]" position="before">
-        <li class="text-muted">Kleur<span class="chevron"></span></li>
+        <li><a href="/shop/extra" class="text-success">Kleur<span class="chevron"></span></a></li>
       </xpath>
-      <!-- remove this div, to avoid the payment pooling -->
-      <xpath expr="//div[@t-att-data-order-id]" position="replace"/>
     </template>
 
     <template id="categoryselection">
@@ -309,6 +284,14 @@
       </xpath>
     </template>
 
+<template id="products" inherit_id='website_sale.products' name="Products">
+      <xpath expr="//t[@t-call='website_sale.search']" position="before">
+        <t t-if="not request.website.sale_get_order() or not len(request.website.sale_get_order().order_line)">
+          <a href="/shop/afwerking"><i class="fa fa-sliders"/> Wijzig type afwerking</a>
+        </t>
+      </xpath>
+    </template>
+
 
     <template id="cart_inherit_custom" inherit_id='website_sale.cart' name="Shopping Cart">
       <xpath expr="//table[@id='cart_products']" position="replace">
@@ -357,11 +340,23 @@
                        }'/>
                      </td>
                      <td class="text-center">
-                       <div class="input-group">
-                         <input type="text" class="form-control js_quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty)" readonly="readonly"/>
-                         <div class="input-group-addon"><i class='fa fa-times' onclick="javascript:$('input.js_quantity').val(0).change()" />
-                       </div>
-                     </div>
+			
+    			<div class="css_quantity input-group" id="product_quantity_id" style="width: 121px;">
+        		    <span class="input-group-addon">
+           	 		<a t-attf-href="#" class="mb8 js_add_cart_json">
+                		    <i class="fa fa-minus"></i>
+            		 	</a>
+        		    </span>
+        		    <input type="text" class="js_quantity form-control" data-min="1" name="add_qty" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="line.aantal" style="text-align: center;"/>
+        		    <span class="input-group-addon">
+            			<a t-attf-href="#" class="mb8 float_left js_add_cart_json">
+                		    <i class="fa fa-plus"></i>
+            			</a>
+        		    </span>
+    			</div>
+			<div class="input-group">
+			<div class="input-group-addon deleteMe"><i class='fa fa-times'/></div>
+			</div>
                    </td>
                  </tr>
                  <tr style="background-color:#F9F9F9">

@@ -8,13 +8,13 @@ _logger = logging.getLogger(__name__)
 
 class website_yenth(website_sale):
 
-    @http.route(['/shop'], type='http', auth="public", website=True)
+    @http.route(['/shop'], type='http', auth="user", website=True)
     def shop(self, page=0, category=None, search='', **post):
         if not request.session.get('aa_houbolak_afwerking'):
             return request.redirect("/shop/afwerking")
         return super(website_yenth, self).shop(page=page, category=category, search=search, **post)
 
-    @http.route(['/shop/extra'], type='http', auth="public", website=True)
+    @http.route(['/shop/extra'], type='http', auth="user", website=True)
     def extra(self, **post):
         cr, uid, context, pool = request.cr, request.uid, request.context, request.registry
         order = request.website.sale_get_order()
@@ -32,13 +32,13 @@ class website_yenth(website_sale):
         values = dict(order=order, colors=colors)
         return request.website.render("aa_houbolak.extra", values)
 
-    @http.route(['/shop/checkout'], type='http', auth="public", website=True)
+    @http.route(['/shop/checkout'], type='http', auth="user", website=True)
     def checkout(self, **post):
         if not request.session.get('extra_info_done'):
             return request.redirect("/shop/extra")
         return super(website_yenth, self).checkout(**post)
 
-    @http.route(['/shop/afwerking'], type='http', auth="public", website=True)
+    @http.route(['/shop/afwerking'], type='http', auth="user", website=True)
     def afwerking(self, **post):
         cr, context, pool = request.cr, request.context, request.registry
         if post and post.get('afwerking'):
@@ -51,19 +51,19 @@ class website_yenth(website_sale):
         values = dict(afwerkingen=afwerkingen)
         return request.website.render("aa_houbolak.categoryselection", values)
 
-    @http.route(['/shop/confirm_order'], type='http', auth="public", website=True)
+    @http.route(['/shop/confirm_order'], type='http', auth="user", website=True)
     def confirm_order(self, **post):
         response = super(website_yenth, self).confirm_order(**post)
         if response.location == "/shop/payment":
             response = request.redirect("/shop/final")
         return response
 
-    @http.route(['/shop/payment'], type='http', auth="public", website=True)
+    @http.route(['/shop/payment'], type='http', auth="user", website=True)
     def payment(self, **post):
         # should be never in this controller
         return request.redirect("/shop/final")
 
-    @http.route(['/shop/final'], type='http', auth="public", website=True)
+    @http.route(['/shop/final'], type='http', auth="user", website=True)
     def final(self, **post):
         if not request.session.get('extra_info_done'):
             return request.redirect("/shop/extra")
@@ -76,7 +76,7 @@ class website_yenth(website_sale):
         request.website.sale_reset()
         return request.website.render("website_sale.confirmation", dict(order=order))
 
-    @http.route(['/shop/cart/update'], type='http', auth="public", methods=['POST'], website=True)
+    @http.route(['/shop/cart/update'], type='http', auth="user", methods=['POST'], website=True)
     def cart_update(self, product_id, add_qty=1, set_qty=0, **kw):
         MIN_QTY = 1
         resp = request.website.sale_get_order(force_create=1)._cart_update(product_id=int(product_id), add_qty=float(add_qty), set_qty=float(set_qty), line_id=False)
