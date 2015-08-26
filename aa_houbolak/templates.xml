@@ -110,6 +110,21 @@
             <input type="text" class="form-control" id="opmerkingenWebshop" name="opmerkingenWebshop" />
           </div>
         </div>
+	<div class="form-group row">
+		<td>
+		  <span class="input-group-addon">
+           	 		<a t-attf-href="#" class="mb8 js_add_cart_json">
+                		    <i class="fa fa-minus"></i>
+            		 	</a>
+        		    </span>
+        		    <input type="text" class="js_quantity form-control" data-min="1" name="add_qty" t-att-data-line-id="aantal" t-att-value="1" style="text-align: center;" value="1"/>
+        		    <span class="input-group-addon">
+            			<a t-attf-href="#" class="mb8 float_left js_add_cart_json">
+                		    <i class="fa fa-plus"></i>
+            			</a>
+        		    </span>
+		</td>
+	</div>
       </xpath>
     </template>
 
@@ -127,6 +142,10 @@
         <li><a href="/shop/extra" class="text-success">Kleur<span class="chevron"></span></a></li>
       </xpath>
     </template>
+
+ <record model="ir.ui.view" id="website_sale.product_quantity">
+       <field name="active" eval="False"/>
+    </record>
 
     <template id="categoryselection">
       <t t-call="website.layout">
@@ -174,6 +193,7 @@
                 <div class="row bg-info" style="padding:15px;margin-top:30px;border-radius:15px;">
                   <div class="form-inline form-group">
                     <label for="color" class="h4">Kleur producten</label>
+		    <br/>
                     <select id="color" name="color" class="form-control">
                       <t t-foreach="colors" t-as="color">
                         <option t-att-value='color.id'>
@@ -342,20 +362,24 @@
                      <td class="text-center">
 			
     			<div class="css_quantity input-group" id="product_quantity_id" style="width: 121px;">
-        		    <span class="input-group-addon">
+        		    <!--<span class="input-group-addon">
            	 		<a t-attf-href="#" class="mb8 js_add_cart_json">
                 		    <i class="fa fa-minus"></i>
             		 	</a>
         		    </span>
-        		    <input type="text" class="js_quantity form-control" data-min="1" name="add_qty" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="line.aantal" style="text-align: center;"/>
+        		    <input type="text" class="js_quantity form-control" data-min="1" name="add_qty" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="line.aantal" style="text-align: center;" value="line.aantal"/>
         		    <span class="input-group-addon">
             			<a t-attf-href="#" class="mb8 float_left js_add_cart_json">
                 		    <i class="fa fa-plus"></i>
             			</a>
         		    </span>
     			</div>
+			<div class="input-group">-->
+ <input type="text" class="js_quantity form-control" data-min="1" name="add_qty" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="line.aantal" style="text-align: center;" disabled="disabled"/>
+
 			<div class="input-group">
 			<div class="input-group-addon deleteMe"><i class='fa fa-times'/></div>
+			</div>
 			</div>
                    </td>
                  </tr>
@@ -392,6 +416,19 @@
         </table>
       </xpath>
 
+    </template>
+
+    <template id="cart_inherit_header" inherit_id='website_sale.header' name="Header Shop My Cart Link">
+      <xpath expr="//header//ul[@id='top_menu']/li" position="replace">
+      <t t-set="website_sale_order" t-value="website.sale_get_order()"/>
+      <li t-att-class="'' if website_sale_order and website_sale_order.cart_quantity else 'hidden'">
+          <a href="/shop/cart">
+              <i class="fa fa-shopping-cart"></i>
+              My cart
+<sup class="my_cart_quantity label label-primary">€</sup><sup t-attf-class="my_cart_quantity label label-primary" t-esc="website_sale_order and website_sale_order.amount_total or ''"/>
+	  </a>
+      </li>
+      </xpath>
     </template>
   </data>
 </openerp>

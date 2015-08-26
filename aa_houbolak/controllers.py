@@ -4,6 +4,7 @@ from openerp.http import request
 from openerp.addons.website_sale.controllers.main import website_sale
 import logging
 _logger = logging.getLogger(__name__)
+from openerp.tools.translate import _
 
 
 class website_yenth(website_sale):
@@ -86,11 +87,15 @@ class website_yenth(website_sale):
             if line.id == resp.get('line_id'):
                 if not order.afwerkingpicker:
                     values = {'afwerkingpicker': request.session['aa_houbolak_afwerking']}
-                resultaatBerekening = int(kw.get('hoogteWebshop')) * int(kw.get('breedteWebshop')) / 1000000 * add_qty
+		if line.aantal > 0:
+                    resultaatBerekening = int(kw.get('hoogteWebshop')) * int(kw.get('breedteWebshop')) / 1000000 * line.aantal
+		else:
+		    resultaatBerekening = int(kw.get('hoogteWebshop')) * int(kw.get('breedteWebshop')) / 1000000 * float(add_qty)
+		_logger.critical("line.aantal: " + str(line.aantal) + "add_qty: " + str(add_qty) + " resultaatBerekening: " + str(resultaatBerekening))
                 values['order_line'] = [(1, line.id, {
                     'hoogte': int(kw.get('hoogteWebshop')),
                     'breedte': int(kw.get('breedteWebshop')),
-                    'aantal': add_qty,
+                    'aantal': float(add_qty),
                     'product_uom_qty': max(resultaatBerekening, MIN_QTY),
                     'links': bool(kw.get('linksWebshop')),
                     'rechts': bool(kw.get('rechtsWebshop')),
@@ -102,3 +107,70 @@ class website_yenth(website_sale):
                 order.write(values)
                 break
         return request.redirect("/shop/cart")
+
+    @http.route('/shop/payment/get_status/<int:sale_order_id>', type='json', auth="public", website=True)
+    def payment_get_status(self, sale_order_id, **post):
+        cr, uid, context = request.cr, request.uid, request.context
+
+        order = request.registry['sale.order'].browse(cr, SUPERUSER_ID, sale_order_id, context=context)
+        assert order.id == request.session.get('sale_last_order_id')
+
+        if not order:
+            return {
+                'state': 'error',
+                'message': '<p>%s</p>' % _('Uw order is succesvol verwerkt.'),
+            }
+
+        tx_ids = request.registry['payment.transaction'].search(
+            cr, SUPERUSER_ID, [
+                '|', ('sale_order_id', '=', order.id), ('reference', '=', order.name)
+            ], context=context)
+
+        if not tx_ids:
+            if order.amount_total:
+                return {
+                    'state': 'error',
+                    'message': '<p>%s</p>' % _('Uw order is succesvol verwerkt.'),
+                }
+            else:
+                state = 'done'
+                message = ""
+                validation = None
+        else:
+            tx = request.registry['payment.transaction'].browse(cr, SUPERUSER_ID, tx_ids[0], context=context)
+            state = tx.state
+            if state == 'done':
+                message = '<p>%s</p>' % _('Your payment has been received.')
+            elif state == 'cancel':
+                message = '<p>%s</p>' % _('The payment seems to have been canceled.')
+            elif state == 'pending' and tx.acquirer_id.validation == 'manual':
+                message = '<p>%s</p>' % _('Your transaction is waiting confirmation.')
+                if tx.acquirer_id.post_msg:
+                    message += tx.acquirer_id.post_msg
+            else:
+                message = '<p>%s</p>' % _('Your transaction is waiting confirmation.')
+            validation = tx.acquirer_id.validation
+
+        return {
+            'state': state,
+            'message': message,
+            'validation': validation
+        }
+
+    #Override default cart
+    """@http.route(['/shop/cart/update_json'], type='json', auth="public", methods=['POST'], website=True)
+    def cart_update_json(self, product_id, line_id, add_qty=None, set_qty=None, display=True, **kw):
+        order = request.website.sale_get_order(force_create=1)
+        value = order._cart_update(product_id=product_id, line_id=line_id, add_qty=add_qty, set_qty=set_qty)
+        if not display:
+            return None
+        value['cart_quantity'] = order.cart_quantity
+        value['website_sale.total'] = request.website._render("website_sale.total", {
+                'website_sale_order': request.website.sale_get_order()
+            })
+	for line in order.order_line:
+            if line.id == value.get('line_id'):
+		resultaatBerekening = (line.hoogte * line.breedte) / 1000000 * value.get('quantity')
+		value['product_uom_qty'] = resultaatBerekening
+        return value
+    """
