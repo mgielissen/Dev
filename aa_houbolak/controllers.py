@@ -9,7 +9,12 @@ from openerp.tools.translate import _
 
 class website_yenth(website_sale):
 
-    @http.route(['/shop'], type='http', auth="user", website=True)
+    @http.route([
+        '/shop',
+        '/shop/page/<int:page>',
+        '/shop/category/<model("product.public.category"):category>',
+        '/shop/category/<model("product.public.category"):category>/page/<int:page>'
+    ], type='http', auth="user", website=True)
     def shop(self, page=0, category=None, search='', **post):
         if not request.session.get('aa_houbolak_afwerking'):
             return request.redirect("/shop/afwerking")
