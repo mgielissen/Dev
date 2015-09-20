@@ -93,6 +93,7 @@ class sale_order_line_finishingpicker(models.Model):
     _description = 'Voor dropdown van afwerkingen bij offerte/order/factuur'
     name = fields.Char('Name', required=True)
     website_publish = fields.Boolean('Published', default=True)
+    afwerkingpickerProduct = fields.Many2many('product.template', 'product_finishing_rel', 'dest_id_finishing', 'src_id_finishing', string='Afwerking(en):')
 
 
 #Add many2one (for color dropdown) to sale.order

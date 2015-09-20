@@ -267,6 +267,7 @@
            <group>
             <field name="name"/>
             <field name="website_publish"/>
+            <field name="afwerkingpickerProduct"/>
           </group>
         </form>
       </field>
@@ -278,6 +279,7 @@
         <tree string="Onze afwerkingen">
           <field name="name"/>
           <field name="website_publish"/>
+          <field name="afwerkingpickerProduct"/>
         </tree>
       </field>
     </record>
